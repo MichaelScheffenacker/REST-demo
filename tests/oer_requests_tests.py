@@ -5,6 +5,10 @@ import oer_requests as oerr
 
 class GetRate(unittest.TestCase):
 
+    # the following three unittest basically test the sanitizer;
+    # it is also used in api.py
+    # todo: create a separate sanitizer test
+
     def test_currency_not_a_string(self):
         self.assertRaises(ValueError,  oerr.get_rate, 1)
 

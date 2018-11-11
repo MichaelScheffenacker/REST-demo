@@ -3,19 +3,24 @@ import random
 import string
 
 from db import DB
-from setup_db import Request
+from requests_record import RequestRecord
 
 
 class RequestClass(unittest.TestCase):
 
     def test_insert(self):
+
+        # this test cases leaves entries in the 'production'
+        # database. I an realistic scenario, it should a) point
+        # to a testing db, or b) roll back the queries/inputs.
+
         db = DB()
         session = db.get_session()
 
         letter = random.choice(string.ascii_letters.lower())
         currency = 'TST' + letter
 
-        request = Request(
+        request = RequestRecord(
             currency=currency,
             requested_amount=1,
             exchange_rate=0.88,
@@ -24,7 +29,7 @@ class RequestClass(unittest.TestCase):
 
         try:
             session.add(request)
-            last_entry = session.query(Request).all()[-1]
+            last_entry = session.query(RequestRecord).all()[-1]
             self.assertEqual(request, last_entry)
 
             session.commit()
