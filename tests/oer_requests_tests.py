@@ -20,6 +20,8 @@ class GetRate(unittest.TestCase):
         self.assertRaises(ValueError, oerr.get_rate, 'EU文')
         self.assertRaises(ValueError, oerr.get_rate, 'EUµ')
 
+    # the following unittest takes a bit long, since it makes
+    # two api calls. Therefore it might be deactivated:
     # def test_currency_lower_case(self):
     #     self.assertEqual(oerr.get_rate('eur'), oerr.get_rate('EUR'))
 
