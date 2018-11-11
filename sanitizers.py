@@ -12,4 +12,18 @@ def currency(value):
 
 
 def amount(value):
-    pass
+    try:
+        value = float(value)
+    except ValueError:
+        raise ValueError("Amount has to be a float, e.g. 100.23 or 0.25567801")
+    return value
+
+
+def number(value):
+    try:
+        value = int(value)
+    except ValueError:
+        raise ValueError("Number has to be a positive integer, e.g. 2")
+    if not value > 0:
+        raise ValueError("Number has to be a positive integer, e.g. 2")
+    return value

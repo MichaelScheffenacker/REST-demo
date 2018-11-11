@@ -1,14 +1,22 @@
-import json
+from contextlib import contextmanager
 from flask import Flask
-from flask_restful import Resource, Api, reqparse
+from flask_restful import Resource, Api, reqparse, abort
 
 from db import DB
+import sanitizers
 
 
 app = Flask(__name__)
 api = Api(app)
 
 db = DB()
+
+@contextmanager
+def sanitizer_scope():
+    try:
+        yield
+    except ValueError as err:
+        abort(400, message=str(err))
 
 
 class GrabAndSave(Resource):
@@ -23,16 +31,23 @@ class Last(Resource):
 
 class LastCurrency(Resource):
     def get(self, currency):
+        with sanitizer_scope():
+            currency = sanitizers.currency(currency)
         return db.get_last_requests(number=1, currency=currency)
 
 
 class LastN(Resource):
     def get(self, number):
+        with sanitizer_scope():
+            number = sanitizers.number(number)
         return db.get_last_requests(number, currency=None)
 
 
 class LastNCurrency(Resource):
     def get(self, number, currency):
+        with sanitizer_scope():
+            number = sanitizers.number(number)
+            currency = sanitizers.currency(currency)
         return db.get_last_requests(number, currency)
 
 

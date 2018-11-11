@@ -13,12 +13,13 @@ class RequestClass(unittest.TestCase):
         # this test cases leaves entries in the 'production'
         # database. I an realistic scenario, it should a) point
         # to a testing db, or b) roll back the queries/inputs.
+        # todo: run db tests on a separate db
 
         db = DB()
         session = db.get_session()
 
         letter = random.choice(string.ascii_letters.lower())
-        currency = 'TST' + letter
+        currency = 'TS' + letter
 
         request = RequestRecord(
             currency=currency,
