@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from requests_record import RequestRecord
@@ -22,17 +23,13 @@ class DB:
     def get_engine(self):
         return self.engine
 
-    def get_last_requests(self, number, currency):
+    # contextmanager implemented as suggested by sqlalchemy documentation:
+    # https://docs.sqlalchemy.org/en/latest/orm/session_basics.html#when-do-i-construct-a-session-when-do-i-commit-it-and-when-do-i-close-it
+    @contextmanager
+    def session_scope(self):
         session = self.Session()
         try:
-            if currency:
-                filt = RequestRecord.currency == currency
-                entries = session.query(RequestRecord).filter(filt).all()[-number:]
-            else:
-                entries = session.query(RequestRecord).all()[-number:]
-            result = [entry.fields_as_dict() for entry in entries]
-            if len(result) == 1:
-                result = result[0]
+            yield session
             session.commit()
         except:
             session.rollback()
@@ -40,4 +37,12 @@ class DB:
         finally:
             session.close()
 
+    def select_last_requests(self, number, currency):
+        with self.session_scope() as session:
+            if currency:
+                criterion = RequestRecord.currency == currency
+                entries = session.query(RequestRecord).filter(criterion).all()[-number:]
+            else:
+                entries = session.query(RequestRecord).all()[-number:]
+            result = [entry.fields_as_dict() for entry in entries]
         return result
