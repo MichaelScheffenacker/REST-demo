@@ -1,6 +1,7 @@
 import unittest
 
-import oer_requests as oerr
+from oer_requests import get_rate
+# todo: import functions from oer_request separately
 
 
 class GetRate(unittest.TestCase):
@@ -10,26 +11,27 @@ class GetRate(unittest.TestCase):
     # todo: create a separate sanitizer test
 
     def test_currency_not_a_string(self):
-        self.assertRaises(ValueError,  oerr.get_rate, 1)
+        self.assertRaises(ValueError,  get_rate, 1)
 
     def test_currency_not_three_characters(self):
-        self.assertRaises(ValueError, oerr.get_rate, 'XX')
-        self.assertRaises(ValueError, oerr.get_rate, 'XXXX')
+        self.assertRaises(ValueError, get_rate, 'XX')
+        self.assertRaises(ValueError, get_rate, 'XXXX')
 
     def test_currency_invalid_character(self):
-        self.assertRaises(ValueError, oerr.get_rate, 'EU#')
-        self.assertRaises(ValueError, oerr.get_rate, 'EUä')
-        self.assertRaises(ValueError, oerr.get_rate, 'EUá')
-        self.assertRaises(ValueError, oerr.get_rate, 'EU1')
-        self.assertRaises(ValueError, oerr.get_rate, 'EU文')
-        self.assertRaises(ValueError, oerr.get_rate, 'EUµ')
+        self.assertRaises(ValueError, get_rate, 'EU#')
+        self.assertRaises(ValueError, get_rate, 'EUä')
+        self.assertRaises(ValueError, get_rate, 'EUá')
+        self.assertRaises(ValueError, get_rate, 'EU1')
+        self.assertRaises(ValueError, get_rate, 'EU文')
+        self.assertRaises(ValueError, get_rate, 'EUµ')
+
+    def test_missing_currency(self):
+        self.assertRaises(ValueError, get_rate, 'XXX')
 
     # the following unittest takes a bit long, since it makes
     # two api calls. Therefore it might be deactivated:
     # def test_currency_lower_case(self):
-    #     self.assertEqual(oerr.get_rate('eur'), oerr.get_rate('EUR'))
+    #     self.assertEqual(get_rate('eur'), get_rate('EUR'))
 
     def test_one_euro(self):
-        self.assertAlmostEqual(0.88, oerr.get_rate('EUR'), 2)
-
-
+        self.assertAlmostEqual(0.88, get_rate('EUR'), 2)
