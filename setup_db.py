@@ -1,11 +1,10 @@
 from sqlalchemy_utils import database_exists, create_database, drop_database
 
-from db import DB
+import db
 from requests_record import Base
 
 
-db = DB()
-engine = db.get_engine()
+engine = db.engine
 
 # if database_exists(engine.url):
 #     drop_database(engine.url)
