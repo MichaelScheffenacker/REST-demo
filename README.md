@@ -19,6 +19,13 @@ The POST request has to contain the following two fields:
 - lower case letters are accepted and transformed to
 upper case letters
 
+curl:
+```
+curl http://localhost:5000/grab_and_save -d "amount=1.0&currency=EUR" -X POST
+curl http://localhost:5000/grab_and_save -d "amount=2.34&currency=EUR" -X POST
+curl http://localhost:5000/grab_and_save -d "amount=2.34&currency=BTC" -X POST
+```
+
 ### last
 
 Returns a array(list) of dictionaries that contains 
