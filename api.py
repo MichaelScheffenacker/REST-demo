@@ -50,7 +50,7 @@ class GrabAndSave(Resource):
             calculated_amount_USD=calculated_amount
         )
 
-        db.insert_request(request)
+        return db.insert_request(request)
 
 
 class Last(Resource):

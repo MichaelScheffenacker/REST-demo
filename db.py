@@ -46,3 +46,6 @@ def select_last_requests(number, currency):
 def insert_request(request_record):
     with session_scope() as session:
         session.add(request_record)
+        session.flush()  # flush() required to get the insert id
+        result = request_record.fields_as_dict()
+    return result
