@@ -7,7 +7,7 @@ from requests_record import RequestRecord
 # The db password should not be in this file, nor in the project
 # at all.
 
-engine = create_engine('mysql://xapo:xxx@localhost/xapo')
+engine = create_engine('mysql://root:xxx@xapodb/xapo')
 Session = sessionmaker(bind=engine)
 
 

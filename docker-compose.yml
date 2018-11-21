@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  xapodb:
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: xxx
+    networks:
+      - xaponet
+
+  xapo:
+    build: .
+    ports:
+      - 5000:5000
+    depends_on:
+      - xapodb
+    networks:
+      - xaponet
+
+networks:
+  xaponet:
+    driver: bridge
