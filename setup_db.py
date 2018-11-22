@@ -7,8 +7,9 @@ from requests_record import Base
 
 
 def setup(tries=0):
-    max_tries = 20
-    wait = 2
+    max_sec = 120
+    wait_sec = 2
+    max_tries = max_sec // wait_sec
 
     try:
         engine = db.engine
@@ -17,15 +18,20 @@ def setup(tries=0):
         if not database_exists(engine.url):
             create_database(engine.url)
         Base.metadata.create_all(engine)
+        print(' ### ### setup_db successful (tries:{}, time: {}s)'.format(
+            tries,
+            tries * wait_sec
+        ))
     except exc.SQLAlchemyError as err:
         if tries < max_tries:
-            time.sleep(wait)
+            time.sleep(wait_sec)
             setup(tries + 1)
         else:
-            print(' ### ! ### setup_db failed ({})'.format(tries))
+            print(' ### ### setup_db failed ({}, time: {}s)'.format(
+                tries,
+                tries * wait_sec
+            ))
             raise err
-
-    print(' ### ! ### setup_db successful ({})'.format(tries))
 
 
 if __name__ == '__main__':
