@@ -1,4 +1,14 @@
-# xapo-rest
+# REST demo
+
+This is a very brief demo that includes:
+- Python
+- Flask (Flask-RESTful)
+- SQLAlchemy
+- Docker
+
+The purpose of this demo is to show my coding style and
+provide an overview of utilized technologies.
+
 
 ## API
 
