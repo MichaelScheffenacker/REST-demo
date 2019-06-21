@@ -1,0 +1,9 @@
+sudo docker exec -it xapodb /bin/sh
+cp ~/workspace/xapo-rest/setup_db.py .
+sudo docker exec -it testdocker_xapodb_1 /bin/sh
+sudo docker-compose up --build
+sudo docker-compose rm -v
+sudo docker stop xapo && sudo docker rm xapo && sudo docker build -t xapo/rest . && sudo docker run --rm --name=xapo --network bridge -d -p 5000:5000 xapo/rest
+sudo docker stop xapodb && sudo docker rm -v xapodb && sudo docker run --rm --name xapodb --network bridge --ip=172.25.0.1 -e MYSQL_ROOT_PASSWORD=xxx -d mariadb
+curl http://localhost:5000/grab_and_save -d "amount=1.0&currency=BTC" -X POST
+curl http://localhost:5000/grab_and_save -d {"amount":1, "currency":"EUR"} -H Content-Type: application/json -X POST
